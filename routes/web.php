@@ -130,5 +130,10 @@ Route::resources([
     'reportes'    => ReporteVentaController::class,
 ]);
 
+Route::get('/{any}', function () {
+    return view('app'); // Asegúrate de que 'app' sea la vista que carga tu aplicación React.
+})->where('any', '.*');
+
+
 // Rutas de autenticación predeterminadas de Laravel Breeze/Fortify
 require __DIR__ . '/auth.php';
