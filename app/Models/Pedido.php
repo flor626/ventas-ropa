@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
-    public function user() {
-    return $this->belongsTo(User::class);
+    protected $fillable = [
+        'user_id',
+        'direccion_envio',
+        'estado',
+        'total',
+        // agrega aquí cualquier otro campo que estés guardando
+    ];
+    public function usuario() {
+    return $this->belongsTo(User::class, 'user_id');
 }
 
 public function productos()
@@ -16,7 +23,5 @@ public function productos()
                 ->withPivot('cantidad', 'precio_unitario')
                 ->withTimestamps();
 }
-
-
 
 }

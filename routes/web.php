@@ -12,6 +12,9 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ReporteVentaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\ProductoAdminController;
+use App\Http\Controllers\Admin\PedidoAdminController;
+use App\Http\Controllers\Admin\InventarioAdminController;
+use App\Http\Controllers\Admin\ReporteVentaAdminController; 
 
 
 /*
@@ -85,8 +88,23 @@ Route::middleware(['auth'])->prefix('encargado')->group(function () {
     Route::get('/productos/{id}/editar', [ProductoAdminController::class, 'edit'])->name('encargado.productos.editar');
     Route::put('/productos/{id}', [ProductoAdminController::class, 'update'])->name('encargado.productos.update');
     Route::delete('/productos/{id}', [ProductoAdminController::class, 'destroy'])->name('encargado.productos.destroy');
+ 
+ 
+    // Pedidos
+ Route::get('pedidos', [PedidoAdminController::class, 'index'])->name('encargado.pedidos.index');
+ Route::get('pedidos/{id}', [PedidoAdminController::class, 'show'])->name('encargado.pedidos.show');
+ Route::put('/pedidos/{id}', [PedidoAdminController::class, 'update'])->name('encargado.pedidos.update');
 
+ // Inventario
+ Route::get('inventario', [InventarioAdminController::class, 'index'])->name('encargado.inventario.index');
+
+ // Reportes
+ Route::get('reportes/ventas', [ReporteVentaAdminController::class, 'index'])->name('encargado.reportes.ventas');
     // otras rutas protegidas para encargado...
+
+
+
+
 });
 
 Route::get('/login/cliente', fn () => Inertia::render('Auth/Login', ['tipo' => 'cliente']));
