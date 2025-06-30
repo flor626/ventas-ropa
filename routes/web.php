@@ -22,15 +22,13 @@ use App\Http\Controllers\Admin\ReporteVentaAdminController;
 |--------------------------------------------------------------------------
 */
 
+// ✅ Ahora esta ruta usa el controlador para que pase los productos
+Route::get('/', [ProductoController::class, 'index'])->name('catalogo');
 
-Route::get('/', function () {
-    return Inertia::render('Catalogo', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// ✅ Ruta para ver un producto específico
+Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
+
+// Cierre de sesión
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/encargado/dashboard', function () {
@@ -46,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Encargado/Dashboard');
     })->name('encargado.dashboard');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Rutas de Autenticación y Perfil
@@ -64,19 +63,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/confirmar', fn () => Inertia::render('ConfirmarPedido'))->name('confirmar.pedido');
     Route::get('/historial', fn () => Inertia::render('HistorialPedidos'))->name('historial.pedidos');
     Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
-
 });
-Route::get('/panel-encargado', fn () => Inertia::render('Encargado/Panel'))
-    ->middleware(['auth']);
 
-
+Route::get('/panel-encargado', fn () => Inertia::render('Encargado/Panel'))->middleware(['auth']);
 
 /*
 |--------------------------------------------------------------------------
 | Rutas para el Panel del Encargado
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth'])->prefix('encargado')->group(function () {
     Route::get('/', fn () => Inertia::render('Encargado/Dashboard'))->name('encargado.dashboard');
 
@@ -88,7 +83,7 @@ Route::middleware(['auth'])->prefix('encargado')->group(function () {
     Route::put('/productos/{id}', [ProductoAdminController::class, 'update'])->name('encargado.productos.update');
     Route::delete('/productos/{id}', [ProductoAdminController::class, 'destroy'])->name('encargado.productos.destroy');
 
-
+    // Pedidos
     Route::get('pedidos', [PedidoAdminController::class, 'index'])->name('encargado.pedidos.index');
     Route::get('pedidos/{id}', [PedidoAdminController::class, 'show'])->name('encargado.pedidos.show');
     Route::put('/pedidos/{id}', [PedidoAdminController::class, 'update'])->name('encargado.pedidos.update');
@@ -96,19 +91,17 @@ Route::middleware(['auth'])->prefix('encargado')->group(function () {
     // Inventario
     Route::get('inventario', [InventarioAdminController::class, 'index'])->name('encargado.inventario.index');
 
-    // Reportes
-    // otras rutas protegidas para encargado...
+    // Reportes (si tienes más, agrégalos aquí)
 });
-
-Route::get('/login/cliente', fn () => Inertia::render('Auth/Login', ['tipo' => 'cliente']));
-Route::get('/login/encargado', fn () => Inertia::render('Auth/Login', ['tipo' => 'encargado']));
-
 
 /*
 |--------------------------------------------------------------------------
 | Ruta de Login personalizada para el Encargado
 |--------------------------------------------------------------------------
 */
+Route::get('/login/cliente', fn () => Inertia::render('Auth/Login', ['tipo' => 'cliente']));
+Route::get('/login/encargado', fn () => Inertia::render('Auth/Login', ['tipo' => 'encargado']));
+
 Route::post('/login-encargado', [AuthenticatedSessionController::class, 'storeEncargado'])
     ->middleware('guest')
     ->name('login.encargado');
@@ -119,12 +112,11 @@ Route::post('/login-encargado', [AuthenticatedSessionController::class, 'storeEn
 |--------------------------------------------------------------------------
 */
 Route::resources([
-    'productos'   => ProductoController::class,
     'carritos'    => CarritoController::class,
     'pedidos'     => PedidoController::class,
     'inventarios' => InventarioController::class,
     'reportes'    => ReporteVentaController::class,
 ]);
 
-// Rutas de autenticación predeterminadas de Laravel Breeze/Fortify
+// Rutas de autenticación predeterminadas
 require __DIR__ . '/auth.php';
