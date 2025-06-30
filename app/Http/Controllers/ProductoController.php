@@ -4,21 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProductoController extends Controller
 {
-    public function index()
-    {
-        return response()->json(Producto::all());
-    }
+    // Este es el correcto para renderizar con Inertia
+public function index()
+{
+    $productos = \App\Models\Producto::all();
 
-    
+    return Inertia::render('Catalogo', [
+        'productos' => $productos,
+        'auth' => Auth::user(),
+        'canLogin' => true,
+        'canRegister' => true,
+    ]);
+}
 
     public function store(Request $request)
     {
         $producto = Producto::create($request->all());
-        return response()->json($producto, 201);
+        return redirect()->back()->with('success', 'Producto creado correctamente');
     }
 
     public function show($id)
@@ -33,12 +40,12 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
         $producto->update($request->all());
-        return response()->json($producto);
+        return redirect()->back()->with('success', 'Producto actualizado');
     }
 
     public function destroy(Producto $producto)
     {
         $producto->delete();
-        return response()->json(null, 204);
+        return redirect()->back()->with('success', 'Producto eliminado');
     }
 }
