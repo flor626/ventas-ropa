@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\Admin;
-//Controllers/Admin/PedidoAdminController.php
 
 use App\Http\Controllers\Controller;
 use App\Models\Pedido;
@@ -36,5 +35,20 @@ class PedidoAdminController extends Controller
 
     return redirect()->back()->with('success', 'Estado actualizado');
 }
+    {
+        $request->validate([
+            'estado' => 'required|in:pendiente,enviado,entregado'
+        ]);
+    
+        $pedido = Pedido::findOrFail($id);
+        $pedido->estado = $request->estado;
+        $pedido->save();
+    
+        // Aquí se puede agregar la lógica para notificar al usuario
+        // por ejemplo con mail, evento, etc.
+    
+        return redirect()->back()->with('success', 'Estado actualizado');
+    }
+    
 
 }

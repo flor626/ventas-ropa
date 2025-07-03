@@ -2,9 +2,9 @@ import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -12,6 +12,8 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
@@ -33,7 +35,7 @@ export default function Login({ status, canResetPassword }) {
                 <div>
                     <InputLabel htmlFor="email" value="Correo Electrónico" />
 
-                    <TextInput
+                    <input
                         id="email"
                         type="email"
                         name="email"
@@ -41,11 +43,14 @@ export default function Login({ status, canResetPassword }) {
                         className="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
                         autoComplete="email"
                         isFocused={true}
+                        autoFocus
                         onChange={(e) => setData('email', e.target.value)}
+                        required
                     />
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
+
 
                 {/* Contraseña */}
                 <div>
@@ -61,10 +66,38 @@ export default function Login({ status, canResetPassword }) {
                         onChange={(e) => setData('password', e.target.value)}
                     />
 
+                {/* Contraseña con ojito */}
+                <div>
+                    <InputLabel htmlFor="password" value="Contraseña" />
+
+                    <div className="relative">
+                        <input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            value={data.password}
+                            className="mt-2 block w-full rounded-xl border-gray-300 shadow-sm pr-10 focus:border-green-500 focus:ring focus:ring-green-200"
+                            autoComplete="current-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? '👁️‍🗨️' : '👁️'}
+                        </button>
+                    </div>
+
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 {/* Recordarme y Olvidé */}
+
+                {/* Recordarme y olvidé contraseña */}
                 <div className="flex items-center justify-between text-sm text-gray-700">
                     <label className="flex items-center">
                         <Checkbox
@@ -85,7 +118,9 @@ export default function Login({ status, canResetPassword }) {
                     )}
                 </div>
 
+
                 {/* Botón */}
+                {/* Botón Iniciar Sesión */}
                 <div>
                     <PrimaryButton
                         className="w-full justify-center bg-green-600 hover:bg-green-700 text-white font-semibold text-base py-2 px-4 rounded-xl shadow-lg transition-all duration-300"
@@ -97,6 +132,7 @@ export default function Login({ status, canResetPassword }) {
             </form>
 
             {/* Enlace registro */}
+            {/* Registro */}
             <div className="mt-6 text-center text-sm text-gray-600">
                 ¿No tienes una cuenta?{' '}
                 <Link
