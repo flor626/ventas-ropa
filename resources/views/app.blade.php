@@ -11,6 +11,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="">
         <link href="" rel="stylesheet" />
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         <!-- Scripts -->
         @routes

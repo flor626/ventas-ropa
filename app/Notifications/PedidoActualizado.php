@@ -33,3 +33,4 @@ class PedidoActualizado extends Notification
             ->line('Gracias por comprar con nosotros.');
     }
 }
+

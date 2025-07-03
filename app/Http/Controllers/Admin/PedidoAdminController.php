@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Notifications\PedidoActualizado; // Asegúrate de importar la notificación
 
 class PedidoAdminController extends Controller
 {
@@ -20,6 +21,20 @@ class PedidoAdminController extends Controller
         return Inertia::render('Encargado/Pedidos/Detalle', ['pedido' => $pedido]);
     }
     public function update(Request $request, $id)
+{
+    $request->validate([
+        'estado' => 'required|in:pendiente,enviado,entregado'
+    ]);
+
+    $pedido = Pedido::findOrFail($id);
+    $pedido->estado = $request->estado;
+    $pedido->save();
+
+    // Aquí se puede agregar la lógica para notificar al usuario
+    // por ejemplo con mail, evento, etc.
+
+    return redirect()->back()->with('success', 'Estado actualizado');
+}
     {
         $request->validate([
             'estado' => 'required|in:pendiente,enviado,entregado'

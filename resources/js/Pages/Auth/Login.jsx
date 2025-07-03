@@ -42,6 +42,7 @@ export default function Login({ status, canResetPassword }) {
                         value={data.email}
                         className="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
                         autoComplete="email"
+                        isFocused={true}
                         autoFocus
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -49,6 +50,21 @@ export default function Login({ status, canResetPassword }) {
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
+
+
+                {/* Contraseña */}
+                <div>
+                    <InputLabel htmlFor="password" value="Contraseña" />
+
+                    <TextInput
+                        id="password"
+                        type="password"
+                        name="password"
+                        value={data.password}
+                        className="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+                        autoComplete="current-password"
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
 
                 {/* Contraseña con ojito */}
                 <div>
@@ -79,6 +95,8 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
+                {/* Recordarme y Olvidé */}
+
                 {/* Recordarme y olvidé contraseña */}
                 <div className="flex items-center justify-between text-sm text-gray-700">
                     <label className="flex items-center">
@@ -100,6 +118,8 @@ export default function Login({ status, canResetPassword }) {
                     )}
                 </div>
 
+
+                {/* Botón */}
                 {/* Botón Iniciar Sesión */}
                 <div>
                     <PrimaryButton
@@ -111,6 +131,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form>
 
+            {/* Enlace registro */}
             {/* Registro */}
             <div className="mt-6 text-center text-sm text-gray-600">
                 ¿No tienes una cuenta?{' '}

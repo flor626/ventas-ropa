@@ -1,3 +1,4 @@
+// resources/js/Pages/Encargado/Pedidos/Index.jsx
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
 
